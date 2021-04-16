@@ -6,7 +6,7 @@ namespace GestaoDeEquipamentos.ConsoleApp1
     {
         static void Main(string[] args)
         {
-            int contadorEquipamento = 0, contadorChamado = 0;
+            int contadorEquipamento = 0, contadorChamado = 0, auxVerificaEquipamento = 0, auxVerificaChamado = 0;
 
             string[] nomeEquipamento = new string[10];
             string[] fabricanteEquipamento = new string[10];
@@ -47,15 +47,23 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                     #region Adicionar Equipamento
                     if (opcao == "1")
                     {
+                        Console.Clear();                        
 
-                        Console.Clear();
+                        for (int i = 0; i < nomeEquipamento.Length; i++)
+                        {
+                            if (nomeEquipamento[i] == null)
+                            {
+                                auxVerificaEquipamento = i;
+                                break;
+                            }
+                        }
 
                         while (confirmacao == true)
                         {
                             Console.WriteLine("Digite o nome do equipamento: ");
-                            nomeEquipamento[contadorEquipamento] = Console.ReadLine();
+                            nomeEquipamento[auxVerificaEquipamento] = Console.ReadLine();
 
-                            if (NomeDeveTer6Caracteres(contadorEquipamento, nomeEquipamento))
+                            if (NomeDeveTer6Caracteres(auxVerificaEquipamento, nomeEquipamento))
                             {
                                 Console.Clear();
                                 MensagemEmVermelho("O equipamento deve ter no mínimo 6 caracteres, tente novamente!!");
@@ -66,8 +74,8 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                             while (true)
                             {
                                 Console.WriteLine("Digite o número série do equipamento: ");
-                                numeroSerieEquipamento[contadorEquipamento] = Console.ReadLine();
-                                if (EhVazioOuNulo(contadorEquipamento, numeroSerieEquipamento))
+                                numeroSerieEquipamento[auxVerificaEquipamento] = Console.ReadLine();
+                                if (EhVazioOuNulo(auxVerificaEquipamento, numeroSerieEquipamento))
                                 {
                                     MensagemEmVermelho("O equipamento deve ter um numero de série, tente novamente!!");
                                     continue;
@@ -79,8 +87,8 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                             while (true)
                             {
                                 Console.WriteLine("Digite o fabricante do equipamento: ");
-                                fabricanteEquipamento[contadorEquipamento] = Console.ReadLine();
-                                if (EhVazioOuNulo(contadorEquipamento, fabricanteEquipamento))
+                                fabricanteEquipamento[auxVerificaEquipamento] = Console.ReadLine();
+                                if (EhVazioOuNulo(auxVerificaEquipamento, fabricanteEquipamento))
                                 {
                                     MensagemEmVermelho("O equipamento deve ter um fabricante, tente novamente!!");
                                     continue;
@@ -92,8 +100,8 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                             while (true)
                             {
                                 Console.WriteLine("Digite o preco do equipamento: ");
-                                precoEquipamento[contadorEquipamento] = Convert.ToDecimal(Console.ReadLine());
-                                if (DecimalEhMaiorQueZero(contadorEquipamento, precoEquipamento))
+                                precoEquipamento[auxVerificaEquipamento] = Convert.ToDecimal(Console.ReadLine());
+                                if (DecimalEhMaiorQueZero(auxVerificaEquipamento, precoEquipamento))
                                 {
                                     MensagemEmVermelho("O equipamento deve ter um preço, tente novamente!!");
                                     continue;
@@ -107,7 +115,7 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                                 Console.WriteLine("Digite a data de fabricação do equipamento: Ex.: 01/01/2001");
                                 string auxData = Console.ReadLine();
 
-                                bool verificaData = ValidaData(contadorEquipamento, dataFabricacaoEquipamento, auxData);
+                                bool verificaData = ValidaData(auxVerificaEquipamento, dataFabricacaoEquipamento, auxData);
 
                                 if (verificaData == false)
                                 {
@@ -120,6 +128,8 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                             confirmacao = false;
 
                             contadorEquipamento++;
+
+                            Console.Clear();
                         }
 
                     }
@@ -327,12 +337,23 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                     #region Adicionar chamado
                     if (opcao == "1")
                     {
+
+                        for (int i = 0; i < tituloChamado.Length; i++)
+                        {
+                            if (tituloChamado[i] == null)
+                            {
+                                auxVerificaChamado = i;
+                                break;
+                            }  
+                        }
+
+
                         Console.Clear();
                         while (true)
                         {
                             Console.WriteLine("Digite o título do chamado: ");
-                            tituloChamado[contadorChamado] = Console.ReadLine();
-                            if (EhVazioOuNulo(contadorChamado, tituloChamado))
+                            tituloChamado[auxVerificaChamado] = Console.ReadLine();
+                            if (EhVazioOuNulo(auxVerificaChamado, tituloChamado))
                             {
                                 MensagemEmVermelho("O chamado deve possuir um titulo, tente novamente!!");
                                 continue;
@@ -345,8 +366,8 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                         while (true)
                         {
                             Console.WriteLine("Digite a descrição do chamado: ");
-                            descChamado[contadorChamado] = Console.ReadLine();
-                            if (EhVazioOuNulo(contadorChamado, descChamado))
+                            descChamado[auxVerificaChamado] = Console.ReadLine();
+                            if (EhVazioOuNulo(auxVerificaChamado, descChamado))
                             {
                                 MensagemEmVermelho("O chamado deve possuir uma descrição, tente novamente!!");
                                 continue;
@@ -358,8 +379,8 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                         while (true)
                         {
                             Console.WriteLine("Digite o equipamento o chamado: ");
-                            equipamentoChamado[contadorChamado] = Console.ReadLine();
-                            if (EhVazioOuNulo(contadorChamado, equipamentoChamado))
+                            equipamentoChamado[auxVerificaChamado] = Console.ReadLine();
+                            if (EhVazioOuNulo(auxVerificaChamado, equipamentoChamado))
                             {
                                 MensagemEmVermelho("O chamado deve possuir um equipamento, tente novamente!!");
                                 continue;
@@ -373,7 +394,7 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                             Console.WriteLine("Digite a data de abertura do chamado: Ex.: 01/01/2001");
                             string auxData = Console.ReadLine();
 
-                            bool verificaData = ValidaData(contadorChamado, dataAberturaChamado, auxData);
+                            bool verificaData = ValidaData(auxVerificaChamado, dataAberturaChamado, auxData);
 
                             if (verificaData == false)
                             {
@@ -385,8 +406,8 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                         }
                         Console.Clear();
 
-                        idChamado[contadorChamado] = contadorChamado;
-                        MensagemEmVermelho("ID DO CHAMADO CRIADO: " + contadorChamado);
+                        idChamado[auxVerificaChamado] = auxVerificaChamado;
+                        MensagemEmVermelho("ID DO CHAMADO CRIADO: " + auxVerificaChamado);
                         contadorChamado++;
 
                         Console.ReadLine();
