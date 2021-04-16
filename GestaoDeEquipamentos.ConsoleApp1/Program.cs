@@ -131,8 +131,11 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                         Console.Clear();
                         for (int i = 0; i < contadorEquipamento; i++)
                         {
-                            MostrarEquipamentos(nomeEquipamento, fabricanteEquipamento, precoEquipamento, numeroSerieEquipamento, dataFabricacaoEquipamento, i);
-                            Console.WriteLine("------------------------------------");
+                            if (nomeEquipamento[i] != null)
+                            {
+                                MostrarEquipamentos(nomeEquipamento, fabricanteEquipamento, precoEquipamento, numeroSerieEquipamento, dataFabricacaoEquipamento, i);
+                                Console.WriteLine("------------------------------------");
+                            }
                         }
                         Console.ReadLine();
 
@@ -255,6 +258,7 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                     #region Excluir equipamento
                     else if (opcao == "4")
                     {
+                        int auxIndiceEquipamento = 0;
                         string auxExcluirNumSerie, auxConfirmarExclusao;
                         bool auxAchouEquipamento = false;
 
@@ -263,17 +267,17 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                             Console.WriteLine("Digite o numero de série do equipamento que deseja excluir: ");
                             auxExcluirNumSerie = Console.ReadLine();
 
-                            // Encontra o equipamento
                             for (int i = 0; i < numeroSerieEquipamento.Length; i++)
                             {
                                 if (EncontraOEquipamentoComNumSerie(numeroSerieEquipamento, auxExcluirNumSerie, i))
                                 {
                                     auxAchouEquipamento = true;
+                                    auxIndiceEquipamento = i;
                                     Console.Clear();
                                     MostrarEquipamentos(nomeEquipamento, fabricanteEquipamento, precoEquipamento, numeroSerieEquipamento, dataFabricacaoEquipamento, i);
                                     while (true)
                                     {
-                                        MensagemEmVermelho("Deseja mesmo deletar o equipamento? (S para CONFIRMAR, N para CANCELAR");
+                                        MensagemEmVermelho("Deseja mesmo deletar o equipamento? (S para CONFIRMAR, N para CANCELAR)");
                                         auxConfirmarExclusao = Console.ReadLine().ToUpper();
 
                                         if (auxConfirmarExclusao != "S" && auxConfirmarExclusao != "N")
@@ -288,13 +292,15 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                                     switch (auxConfirmarExclusao)
                                     {
                                         case "S":
-                                            nomeEquipamento = null; fabricanteEquipamento = null; precoEquipamento = null; numeroSerieEquipamento = null;
-                                            dataFabricacaoEquipamento = null; MensagemEmVermelho("Equipamento deletado com sucesso!!"); break;
+                                            nomeEquipamento[auxIndiceEquipamento] = null; fabricanteEquipamento[auxIndiceEquipamento] = null; 
+                                            precoEquipamento[auxIndiceEquipamento] = 00.00m; numeroSerieEquipamento[auxIndiceEquipamento] = null;
+                                            MensagemEmVermelho("Equipamento deletado com sucesso!!"); break;
                                         case "N": MensagemEmVermelho("O equipamento não foi deletado!!"); break;
                                         default:
                                             break;
                                     }
-
+                                    Console.ReadLine();
+                                    Console.Clear();
                                     break;
                                 }
                             }
@@ -536,8 +542,8 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                                 switch (auxConfirmarExclusao)
                                 {
                                     case "S":
-                                        idChamado = null; tituloChamado = null; descChamado = null; equipamentoChamado = null; dataAberturaChamado = null;
-                                        dataFabricacaoEquipamento = null; MensagemEmVermelho("Chamado deletado com sucesso!!"); break;
+                                        tituloChamado[auxExcluirId] = null; descChamado[auxExcluirId] = null; equipamentoChamado[auxExcluirId] = null;
+                                        MensagemEmVermelho("Chamado deletado com sucesso!!"); break;
                                     case "N": MensagemEmVermelho("O chamado não foi deletado!!"); break;
                                     default:
                                         break;
