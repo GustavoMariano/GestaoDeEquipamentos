@@ -16,41 +16,45 @@ namespace GestaoDeEquipamentos.ConsoleApp1
 
             while (true)
             {
-                Console.WriteLine("1 para equipamentos, 2 para chamados");
-                MensagemEmVermelho("S PARA SAIR");
+                MostrarMenu();
                 string opcao = Console.ReadLine().ToUpper();
 
                 Console.Clear();
 
-                if (opcao == "S")
+                #region Sair
+                if (EhOpcaoSair(opcao))
                 {
                     Console.Clear();
                     break;
                 }
+                #endregion
+
+                #region Equipamentos
                 else if (opcao == "1")
                 {
-
-
                     Console.WriteLine("1 para adicionar, 2 para visualizar, 3 para editar, 4 para excluir");
                     MensagemEmVermelho("S PARA SAIR");
 
                     Console.ReadLine();
 
+                    #region Adicionar Equipamento
                     if (opcao == "1")
                     {
+                        #region Requisitos funcionais
                         #region Nome DEVE ter no mínimo 6 caracteres [OK]
                         #endregion
 
-                        #region DEVE ter preço de aquisição
+                        #region DEVE ter preço de aquisição [OK]
                         #endregion
 
-                        #region Deve ter um número de série
+                        #region Deve ter um número de série [OK]
                         #endregion
 
-                        #region Deve ter uma data de fabricação
+                        #region Deve ter uma data de fabricação [OK]
                         #endregion
 
-                        #region Deve ter um fabricante
+                        #region Deve ter um fabricante [OK]
+                        #endregion
                         #endregion
 
                         Console.Clear();
@@ -70,17 +74,60 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                                 continue;
                             }
 
-                            Console.WriteLine("Digite o número série do equipamento: ");
-                            numeroSerieEquipamento[contadorEquipamento] = Console.ReadLine();
+                            while (true)
+                            {
+                                Console.WriteLine("Digite o número série do equipamento: ");
+                                numeroSerieEquipamento[contadorEquipamento] = Console.ReadLine();
+                                if (EhVazioOuNulo(contadorEquipamento, numeroSerieEquipamento))
+                                {
+                                    MensagemEmVermelho("O equipamento deve ter um nome, tente novamente!!");
+                                    continue;
+                                }
+                                else
+                                    break;
+                            }
 
-                            Console.WriteLine("Digite o fabricante do equipamento: ");
-                            fabricanteEquipamento[contadorEquipamento] = Console.ReadLine();
+                            while (true)
+                            {
+                                Console.WriteLine("Digite o fabricante do equipamento: ");
+                                fabricanteEquipamento[contadorEquipamento] = Console.ReadLine();
+                                if (EhVazioOuNulo(contadorEquipamento, fabricanteEquipamento))
+                                {
+                                    MensagemEmVermelho("O equipamento deve ter um nome, tente novamente!!");
+                                    continue;
+                                }
+                                else
+                                    break;
+                            }
 
-                            Console.WriteLine("Digite o preco do equipamento: ");
-                            precoEquipamento[contadorEquipamento] = Convert.ToDecimal(Console.ReadLine());
+                            while (true)
+                            {
+                                Console.WriteLine("Digite o preco do equipamento: ");
+                                precoEquipamento[contadorEquipamento] = Convert.ToDecimal(Console.ReadLine());
+                                if (DecimalEhMaiorQueZero(contadorEquipamento, precoEquipamento))
+                                {
+                                    MensagemEmVermelho("O equipamento deve ter um nome, tente novamente!!");
+                                    continue;
+                                }
+                                else
+                                    break;
+                            }
 
-                            Console.WriteLine("Digite a data de fabricação do equipamento: Ex.: 01/01/2001");
-                            dataFabricacaoEquipamento[contadorEquipamento] = Convert.ToDateTime(Console.ReadLine());
+                            while (true)
+                            {
+                                Console.WriteLine("Digite a data de fabricação do equipamento: Ex.: 01/01/2001");
+                                string auxData = Console.ReadLine();
+
+                                bool verificaData = ValidaData(contadorEquipamento, dataFabricacaoEquipamento, auxData);
+
+                                if (verificaData == false)
+                                {
+                                    MensagemEmVermelho("O equipamento deve ter uma data de fabricação válida, tente novamente!!");
+                                    continue;
+                                }
+                                else
+                                    break;
+                            }
 
                             confirmacao = false;
 
@@ -90,26 +137,45 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                                 Console.WriteLine(numeroSerieEquipamento[i]);
                                 Console.WriteLine(fabricanteEquipamento[i]);
                                 Console.WriteLine(precoEquipamento[i]);
-                                Console.WriteLine(dataFabricacaoEquipamento[i]);
+                                Console.WriteLine(dataFabricacaoEquipamento[i].ToString("dd/MM/yyyy"));
                             }
                             contadorEquipamento++;
                         }
 
                     }
+                    #endregion
+
+                    #region Visualizar Equipamentos
                     else if (opcao == "2")
                     {
+                        #region Deve mostrar o nome
+                        #endregion
 
+                        #region Deve mostrar o número de série
+                        #endregion
+
+                        #region Deve mostrar a fabricant
+                        #endregion
                     }
+                    #endregion
+
+                    #region Editar Equipamento
                     else if (opcao == "3")
                     {
 
                     }
+                    #endregion
+
+                    #region Excluir equipamento
                     else if (opcao == "4")
                     {
 
                     }
-
+                    #endregion
                 }
+                #endregion
+
+                #region Chamados
                 else if (opcao == "2")
                 {
                     Console.WriteLine("1 para criar, 2 para visualizar, 3 para editar, 4 para excluir");
@@ -117,6 +183,9 @@ namespace GestaoDeEquipamentos.ConsoleApp1
 
                     Console.ReadLine();
                 }
+                #endregion
+
+                #region Opção Inválida
                 else
                 {
                     Console.WriteLine("Opção não reconhecida, por favor tente novamente!!");
@@ -124,7 +193,34 @@ namespace GestaoDeEquipamentos.ConsoleApp1
                     Console.Clear();
                     continue;
                 }
+                #endregion
             }
+        }
+
+        private static void MostrarMenu()
+        {
+            Console.WriteLine("1 para equipamentos, 2 para chamados");
+            MensagemEmVermelho("S PARA SAIR");
+        }
+
+        private static bool EhOpcaoSair(string opcao)
+        {
+            return opcao == "S";
+        }
+
+        private static bool ValidaData(int contadorEquipamento, DateTime[] dataFabricacaoEquipamento, string auxData)
+        {
+            return DateTime.TryParse(auxData, out dataFabricacaoEquipamento[contadorEquipamento]);
+        }
+
+        private static bool DecimalEhMaiorQueZero(int contadorEquipamento, decimal[] precoEquipamento)
+        {
+            return precoEquipamento[contadorEquipamento] < 00.00m;
+        }
+
+        private static bool EhVazioOuNulo(int contadorEquipamento, string[] atributoEquipamento)
+        {
+            return String.IsNullOrEmpty(atributoEquipamento[contadorEquipamento]);
         }
 
         private static bool NomeDeveTer6Caracteres(int contadorEquipamento, string[] nomeEquipamento)
